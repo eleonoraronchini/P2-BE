@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class Archivio {
     static Scanner scanner = new Scanner(System.in);
     static Set<Libri> listaLibri = new HashSet<Libri>();
+    static List <ElementoCatalogo> listaGenerale = new ArrayList<ElementoCatalogo>();
 
 
     public static void addContenutoLibro() {
@@ -36,6 +37,7 @@ public class Archivio {
         if (listaLibri.stream().anyMatch(libro -> libro.getCodiceISBN() == libroaggiunto.getCodiceISBN())) {
             System.out.println("Libro con questo codice ISBN già presente nel catalogo!");
         } else {
+            listaGenerale.add(libroaggiunto);
             listaLibri.add(libroaggiunto);
             System.out.println("Libro aggiunto al catalogo con successo!");
         }
@@ -72,6 +74,7 @@ public class Archivio {
         if (listaRiviste.stream().anyMatch(r -> r.getCodiceISBN() == rivistaAggiunta.getCodiceISBN())) {
             System.out.println("Libro con questo codice ISBN già presente nel catalogo!");
         } else {
+            listaGenerale.add(rivistaAggiunta);
             listaRiviste.add(rivistaAggiunta);
             System.out.println("Rivista aggiunta al catalogo con successo!");
         }
@@ -142,6 +145,67 @@ public class Archivio {
 
         } else { System.out.println("Il risultato della ricerca è: " + LibriFiltratiperAutore);
         }
+    }
+    public static void updateElementoCatalogoByISBN() {
+        System.out.println("Inserisci codice ISBN dell'elemento che vuoi aggiornare nel catalogo:");
+        int codiceISBNToUpdate = Integer.parseInt(scanner.nextLine());
+
+        // Trova l'elemento nel catalogo
+        Optional<ElementoCatalogo> elementoCatalogoToUpdate = listaGenerale.stream()
+                .filter(e -> e.getCodiceISBN() == codiceISBNToUpdate)
+                .findFirst();
+
+        // Se l'elemento esiste, procedi con l'aggiornamento
+        if (elementoCatalogoToUpdate.isPresent()) {
+            ElementoCatalogo e = elementoCatalogoToUpdate.get();
+
+            // Aggiornamento del titolo
+            System.out.println("Inserisci il titolo aggiornato:");
+            String titoloUpdated = scanner.nextLine();
+            e.setTitolo(titoloUpdated);
+
+            // Aggiornamento dell'anno di pubblicazione
+            System.out.println("Inserisci anno di pubblicazione aggiornato:");
+            int annoDiPubblicazioneUpdated = Integer.parseInt(scanner.nextLine());
+            e.setAnnoDiPubblicazione(annoDiPubblicazioneUpdated);
+
+            // Aggiornamento del numero di pagine
+            System.out.println("Inserisci numero di pagine aggiornato:");
+            int numeroDiPagineUpdated = Integer.parseInt(scanner.nextLine());
+            e.setNumPagine(numeroDiPagineUpdated);
+
+            // Se è un libro, aggiorna i campi specifici per un libro
+            if (e instanceof Libri) {
+                System.out.println("Inserisci genere aggiornato:");
+                String genereUpdated = scanner.nextLine();
+                ((Libri) e).setGenere(genereUpdated);
+
+                System.out.println("Inserisci autore aggiornato:");
+                String autoreUpdated = scanner.nextLine();
+                ((Libri) e).setAutore(autoreUpdated);
+
+            } else if (e instanceof Rivista) {
+                // Se è una rivista, aggiorna la periodicità
+                System.out.println("Inserisci la periodicità aggiornata della rivista:");
+                String periodicitaUpdated = scanner.nextLine();
+                ((Rivista) e).setPeriodicità(periodicitaUpdated);
+            } else {
+                System.out.println("Tipo di elemento non riconosciuto.");
+            }
+            System.out.println("Elemento aggiornato con successo!");
+        } else {
+            System.out.println("Elemento con ISBN " + codiceISBNToUpdate + " non trovato nel catalogo.");
+        }
+    }
+
+    ;
+
+    public static void statisticheDelCatalogo (){
+        System.out.println(listaLibri);
+        System.out.println(listaRiviste);
+        System.out.println(listaGenerale.stream().sorted(Comparator.comparing(ElementoCatalogo::getNumPagine).reversed()).limit(1).toList()); // elemento con + pagine
+        System.out.println(listaGenerale.stream().mapToInt(ElementoCatalogo::getNumPagine).average().orElse(0.0)); //media del numero delle pagine
+
     }
 
 }
