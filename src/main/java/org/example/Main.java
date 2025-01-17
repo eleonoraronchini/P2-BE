@@ -1,12 +1,20 @@
 package org.example;
 
-/**
- * Hello world!
- *
- */
-public class Main 
-{
-    public static void main( String[] args ) {
+
+import static org.example.Archivio.*;
+
+public class Main {
+    public static void main(String[] args) {
+        addContenutoLibro();
+        addContenutoLibro();
+        //removeContenutoLibroByISBN();
+        //searchLibriByYear();
+        searchLibriByAuthor();
+
+       /* addContenutoRivista();
+        addContenutoRivista();
+        removeContenutoRivistaByISBN();
+        searchRivistaByYear();*/
 
     }
 }
