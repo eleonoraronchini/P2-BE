@@ -3,9 +3,9 @@ package org.example;
 
 
 public enum Periodicità {
-    SETTIMANALE ("settimanale"),
-    MENSILE ("mensile"),
-    SEMESTRALE ("semestrale");
+    settimanale ("settimanale"),
+    mensile ("mensile"),
+    semestrale ("semestrale");
 
     private final String descrizione;
 

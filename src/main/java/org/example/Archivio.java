@@ -91,6 +91,7 @@ public class Archivio {
         Optional<Libri> libroDaRimuovere = listaLibri.stream().filter(l -> l.getCodiceISBN() == codiceISBNAdd).findFirst();
         if (libroDaRimuovere.isPresent()) {
             listaLibri.remove(libroDaRimuovere.get());
+            listaGenerale.remove(libroDaRimuovere.get());
             System.out.println("Libro con codice ISBN: " + codiceISBNAdd + " rimosso dal catalogo con successo!");
             System.out.println("Catalogo libri: " + listaLibri);
         } else {
@@ -105,13 +106,26 @@ public class Archivio {
         Optional<Rivista> rivistaDaRimuovere = listaRiviste.stream().filter(r -> r.getCodiceISBN() == codiceISBNAdd).findFirst();
         if (rivistaDaRimuovere.isPresent()) {
             listaRiviste.remove(rivistaDaRimuovere.get());
+            listaGenerale.remove(rivistaDaRimuovere.get());
             System.out.println("La rivista con il codice ISBN: " + codiceISBNAdd + " è stata rimossa dal catalogo");
-            System.out.print("Catalogo riviste: " + listaRiviste);
+            System.out.println("Catalogo riviste: " + listaRiviste);
         } else {
             System.out.println("La rivista con il seguente codice ISBN: " + codiceISBNAdd + "non è presente all'interno del catalogo!");
 
         }
     }
+
+    public static void searchElementoCatalogoBYISBN() throws ISBNNotFoundException {
+        System.out.println("Inserisci codice ISBN del contenuto che stai cercando");
+        int elementoCatalogoIISBNFiltrato = Integer.parseInt(scanner.nextLine());
+        Optional<ElementoCatalogo> elementoCatalogoFiltrato = listaGenerale.stream().filter(e -> e.getCodiceISBN() == elementoCatalogoIISBNFiltrato).findFirst();
+        if (elementoCatalogoFiltrato.isPresent()) {
+            elementoCatalogoFiltrato.get();
+            System.out.println("Elemento trovato:" + elementoCatalogoFiltrato);
+        } else {
+            throw new ISBNNotFoundException(elementoCatalogoIISBNFiltrato);
+        }
+    };
 
     public static void searchRivistaByYear() {
         List<Rivista> RivisteFiltrateperAnno = new ArrayList<Rivista>();
@@ -188,11 +202,12 @@ public class Archivio {
                 // Se è una rivista, aggiorna la periodicità
                 System.out.println("Inserisci la periodicità aggiornata della rivista:");
                 String periodicitaUpdated = scanner.nextLine();
-                ((Rivista) e).setPeriodicità(periodicitaUpdated);
+                ((Rivista) e).setPeriodicità(Periodicità.valueOf(periodicitaUpdated));
             } else {
                 System.out.println("Tipo di elemento non riconosciuto.");
             }
             System.out.println("Elemento aggiornato con successo!");
+            System.out.println("Il catalogo aggiornato è: " + listaGenerale);
         } else {
             System.out.println("Elemento con ISBN " + codiceISBNToUpdate + " non trovato nel catalogo.");
         }

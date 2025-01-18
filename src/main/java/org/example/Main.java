@@ -5,11 +5,11 @@ import static org.example.Archivio.*;
 
 public class Main {
     public static void main(String[] args) {
-        addContenutoLibro();
+      /*  addContenutoLibro();
         addContenutoLibro();
         removeContenutoLibroByISBN();
         searchLibriByYear();
-        searchLibriByAuthor();
+        searchLibriByAuthor(); */
 
        addContenutoRivista();
        addContenutoRivista();
@@ -17,6 +17,13 @@ public class Main {
        searchRivistaByYear();
 
        statisticheDelCatalogo();
+       updateElementoCatalogoByISBN();
+
+        try {
+            searchElementoCatalogoBYISBN();
+        } catch (ISBNNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
